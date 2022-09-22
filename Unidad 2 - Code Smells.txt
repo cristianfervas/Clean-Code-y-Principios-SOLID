@@ -1,0 +1,119 @@
+Code Smells
+
+Sintomas de que el codigo no se encuentra del todo limpio
+
+Tipos:
+    En los comentarios
+    En el entorno de desarrollo
+    En las funciones
+    Code Smells generales
+    Code Smells de java y de otros lenguajes
+    En los nombres
+    En los tests
+
+En los comentarios:
+    - Todo comentario que pertenece a otro sistema (Ej: TODO's, comentarios de quien realizo el codigo, etc).
+    - Comentario obsoleto (desactualizado).
+    - Comentario redundante (describir parametros de entrada y retorno de una funcion).
+    - Comentarios mal redactados (deben ser claros y directos).
+    - Codigo comentado (el codigo que no se necesite, se debe eliminar).
+
+En el entorno de desarrollo:
+    - Que la compilacion requiera mas de un paso (solo debe ser checkout y compilar) para java existe maven.
+    - Que los tests requieran mas de un paso (mvn test).
+
+En las funciones:
+    - Demasiados argumentos (Se debe evitar tener mas de 3 argumentos) -> refactorizar o establecer los argumentos en una clase.
+    - Argumentos de salida, es cuando se espera reescribir y retornar un argumento en lugar de retornar una nueva variable.
+    - Pasar un booleano (flag) como argumento, esto da entender que dependiendo de la entrada la funcion se comporta de manera diferente.
+    - Funciones muertas, funciones que no se llaman nunca y deben ser eliminadas.
+
+Code Smells generales:
+    - Mezclar multiples lenguajes en un mismo fichero (razonable en ciertos casos)
+    - Comportamiento obvio no implementado.
+    - Comportamiento incorrecto en los limites del codigo (se refiere al cuidado con las condiciones borde)
+    - Anular mecanismos de seguridad (deshabilitar warnings, comentar o deshabilitar tests, etc)
+    - Duplicidad (el codigo repetido se puede abstraer en un metodo o clase, y puede implicar la necesidad de una jerarquia)
+    - Codigo en un nivel de abstraccion incorrecto (tener cuidado y separar correctamente los dominios)
+    - Clases base que dependan de sus derivadas (las clases base no deben conocer a sus derivadas)
+    - Exponer demasiada informacion (modulos deben tener interfaces pequeñas, y se debe exponer solo lo necesario a traves de metodos)
+    - Codigo muerto (Se debe eliminar codigo que no se usa o que nunca se ejecuta)
+    - Distancia vertical:
+        Variables y funciones deben estar ecrca desde donde son llamadas.
+        Variables locales se definen justo antes de ser usadas.
+        Funciones privadas deen estar debajo de la primera funcion que las usa.
+    - Inconsistencia (Se deben hacer las cosas respetando su forma, si se uso la palabra delete para un metodo, no emplear remove a posterior)
+    - Basura:
+        Constructores sin implementar
+        Getters y setters en todas las variables privadas de una clase
+        variables que no se usan
+        Funciones que nunca son llamadas
+    - Acoplamiento artificial (No se deben acoplar elemntos que no dependan el uno con el otro).
+    - Envidia del ambito de otra clase: 
+        Una clase esta demasiado interesada en los elementos que componen otra clase.
+        Los metodos de una clase deben estar interesados en sus propias variables y funciones.
+    - Recibir un booleano como argumento (Una funcion debe hacer siempre una unica cosa)
+    - Intenciones ocultas o dificiles de apreciar (el codigo debe ser expresivo y claro)
+    - Responsabilidad fuera de lugar (el codigo debe ser escrito en un lugar natural para el lector)
+    - Metodos estaticos inapropiados:
+        Los metodos estaticos no operan con ninguna instancia
+    - No usar variables explicatorias (Si añadir variables hacen que el codigo sea mas claro, se deben añadir)
+    - Funciones que no dicen lo que hacen (Nombres de las funciones deben ser explicativos)
+    - No conocer los algoritmos
+    - Tener dependencias logicas en lugar de dependencias fisicas
+    - No usar polimorfismo en lugar de if/switch (cuidado con condicionales encadenados, quiza requieran usar herencia)
+    - No seguir convenciones
+    - Usar variables en lugar de constantes (Aplicado a numeros o terminos que no quede claro su significado)
+    - No ser precisos:
+        Si se trata con dinero, se debe usar enteros y redondeo
+        Si tratas con concurrencias, asegurate de las condiciones de carrera
+        Tratar las excepciones
+    - Tener la convencion por sobre la estructura
+    - No encapsular condiciones (Las condiciones deben estar encapsuladas en funciones que clarifiquen su proposito)
+    - Usar condicionales negativos (Siempre se deben usar condiciones en positivo)
+    - Funciones que hagan mas de una cosa
+    - Acoplamientos temporales escondidos
+    - Ser arbitrario (se debe ser consistente)
+    - No encapsular condiciones limites
+    - Funciones con mas de un nivel de abstraccion
+    - Configuraciones no modificables a alto nivel
+    - Navegacion transitiva:
+        Un modulo debe saber lo menos posible sobre los demas.
+        Si A usa B y B usa C => evitar a.getB().getC().some_method
+        Se debe escribir codigo timido (Ley de Demeter)
+
+Code Smells en Java:
+    - Listas de imports muy largas (si se usan mas de dos clases de un paquete, es mejor importar todo el paquete)
+    - Herencia de constantes
+    - Enums vs constantes:
+        Se deben usar enums cuando sea posible por sobre las constantes
+
+Code Smells en nombres:
+    - Nombres no descriptivos
+    - Nombres en nivel de abstraccion incorrecto
+    - No usar nomenclatura estandar:
+        Usar la palabra Singleton en zonas donde se use ese patron
+        Usar la palabra controller para las capas asociadas a los controladores
+    - Nombres ambiguos (Los nombres deben ser explicitos)
+    - No usar nombres largos para largos alcances:
+        Es correcto usar nombres como i,j para bucles (poco alcance)
+        Pero en caso tener la clase Car, es mejor definir el atributo horsePower que hp (Alto alcance)
+    - Usar codificaciones (No nombrar una variable tipo String como stringSomething)
+    - Ocultar efectos secundarios (Si existen efectos secundarios, los nombres de variables y funciones deben explicitarlo)
+
+Code Smells en tests:
+    - Tests insuficientes (Se deben probar todas las condiciones).
+    - No usar herramientas de coberturas (Sonarqube).
+    - Evitar tests triviales (No evitar escribir tests triiales).
+    - Tests ignorados (Si tienes dudas en tus tests, significan dudas en el requisito).
+    - No testear condiciones limites.
+    - No buscar bugs de manera exhaustiva
+    - Los patrones de fallo son reveladores:
+        Se deben analizar las similitudes entre los fallos de una funcion
+        Si una funciona falla cuando recibe un string con espacios en blanco, 
+        probablemente haya un problema con el tratamiento de ese casos a nivel general
+    - La cobertura del codigo es reveladora
+    - Tests lentos
+
+
+    

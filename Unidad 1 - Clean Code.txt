@@ -1,0 +1,64 @@
+Apuntes Clean Code
+
+1-Nombramiento:
+    Establecer nombres claros y que definan intenciones.
+    Nombres deben ser faciles de buscar (evitar abreviaciones, preferible un nombre largo y claro, que uno corto que no se entienda).
+
+    Nombre de clases: 
+        -Deben ser un nombre o un conjunto de nombres, NO DEBEN SER VERBOS.
+    Nombre de metodos:
+        -Deben ser un verbo, indicando una accion.
+    
+    Se sugiere añadir contexto para el nombre de variables, para esto se pueden usar prefijos por ejemplo addr_ 
+    de esta forma, se infiere que las variables hacen referencia a una direccion.
+
+2- Funciones
+    Deben hacer UNA SOLA COSA (pueden llamar a otras funciones, solo no definir el como hacer multiples cosas).
+    Deben ser muy PEQUEÑAS.
+    Deben tener un nivel de abstraccion.
+    Deben recibir POCOS ARGUMENTOS (no mas de 3).
+    NO deben tener efectos secundarios.
+    Devuelven EXCEPCIONES en lugar de errores (si se devuelven excepciones se pueden manejar a posterior, los errores se deben gestionar al instante).
+    (las excepciones try-catch incluso pueden ser gestionados en una funcion aparte).
+
+3- Comentarios
+    Se añaden SOLO CUANDO SEAN ESTRICTAMENTE NECESARIO.
+    Son complejos de mantener, dado que el codigo cambia pero los comentarios se desactualizan.
+    NO SE COMENTA CODIGO que ya no se usar.
+    BUENOS COMENTARIOS pueden ir para explicar expresiones regulares, o los TODO's en lugares especificos y criticos.
+
+4- Formato del codigo
+    Vertical:
+        Densidad: Dejar lineas en blanco que separen CONCEPTOS.
+        Orden: Declarar funciones en orden de llamada.
+        Distancia: Es importante agrupar conceptos que esten relacionados.
+
+    Horizontal:
+        Densidad: Establecer espacios en blanco entre operadores.
+        Indentacion: Dos o cuatro espacios, tamaño de lineas maximo de 100 caracteres y usar siempre las mismas reglas.
+
+5- Tratamiento de errores
+    Suele ensuciar e codigo si no se sabe tratar correctamente
+    Se debe devolver excepciones en lugar de codigos de errores
+    Usar excepciones Unchecked:
+        Son excepciones relacionadas al tiempo de ejecucion (NullPoint exception)
+        Se pueden tratar con try-catch pero no es estrictamente NECESARIO
+        Las excepciones checked, son las excepciones que de no ser tratadas, el codigo no compilara (aplica a lenguajes compilados)
+    No se debe devolver ni pasar un null:
+        Provoca que se deba verificar el parametro de entrada, ya que si no lo hace, podria levantar una nullpointer exception.
+
+6- Tests Unitarios
+    Usar librerias de tests unitarios (JUnit, Unittest, Jasmine).
+    Sirve para la refactorizacion del codigo.
+    Si se mantiene una cobertura >90% se garantiza una seguridad al momento de hacer modificaciones.
+
+    TDD: Filosofia orientada a generar codigo a partir de los tests
+        1- Escribe un test que falle (dado que no hay implementacion).
+        2- Escribe el codigo suficiente para que el test funciones.
+        3- Mejora el codigo sin afectar su comportamiento.
+
+    Para la creacion de tests se usa Given -> When -> Then
+        ej nombre de test: givenEmptyPassengers_WhenFlightStart_thenGetPassengersAmount()
+    
+    En java se recomienda crear el metodo 'equals' al momento de testear, de esta forma, assertEquals comparara por referencia
+    evaluando si es que son el mismo objeto, comparara todos los campos, sino se implementa se debe comparar campo a campo

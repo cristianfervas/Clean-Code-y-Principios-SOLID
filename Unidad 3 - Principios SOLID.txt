@@ -1,0 +1,138 @@
+Acronimo
+
+Single Responsability Principle
+Open-Closed Principle
+Liskov Substitution Principle
+Interface Segregation Principle
+Dependency Inversion Principle
+
+Nos ayudan a:
+    Crear Software escalable.
+    Crear arquitectura limpia y mantenible.
+    escribir codigo facil de leer y entender.
+    modulos con alta cohesion y bajo acoplamiento.
+
+Cohesion y acoplamiento:
+    Cohesion: 
+        Grado en que los elementos de un modulo estan relacionados entre si.
+        Mientras mas alta sea la cohesion, mejor.
+        Para generar mayor cohesion generalmente se agrupan los elementos relacionados en un modulo diferente.
+    
+    Acoplamiento:
+        Grado en que dos modulos de software estan relacionados
+        Mientras menos acoplamiento, mejor.
+        Si se modifica un modulo, debe afectar lo menos posible a los demas
+
+SOLID:
+
+Single Responsability Principle:
+    No es que un modulo deba hacer una unica cosa.
+    Un modulo debe tener una unica razon para cambiar.
+    Un modulo debe ser responsable de solo un usuario o interesado del sistema
+
+    (En POO modulo == clase)
+
+    Sintomas de incumplimiento:
+        Duplicidad accidental:
+            Se tienen 3 tipos de usuarios Human Resources, DBA, Accountant
+            Se tiene la clase Employee con 3 metodos:
+
+                Employee  
+                    calculateYearReport() -> Accountant
+                    save() -> DBA
+                    reportHours() -> Human Resources
+                
+            En este caso esta clase es responsable de 3 actores diferentes.
+
+            Si por ejemplo calculateYearReport() y reportHours() compartieran
+            un algoritmo y ese algoritmo se encuentra abstraido, se tendria el caso
+            de que dos actores diferentes comparten codigo
+            Si alguno necesita realizar una modificacion, afectaria al otro.
+
+            Para solucionarlo, se puede implementar una clase por cada tipo de usuario.
+
+        Merges de codigo:
+            Si constantemente se requiere realizar merges en un mismo modulo es probable
+            que se este incumpliendo este principio.
+
+            Significa que dos desarrolladores modifican la misma clase por razones diferentes,
+            por lo que la clase tiene mas de un motivo para cambiar
+
+            Las clases deben tener una razo para cambiar.
+
+Open-Closed Principle:
+    Un artefacto de software debe estar abierto para su extension pero cerrado para su modificacion.
+
+    Se debe poder aumentar la funcionalidad de un artefacto de software sin necesidad de modificar
+    el funcionamiento ya existente.
+        
+    Para conseguirlo:
+        Se debe separar el software en componentes con alta cohesion.
+        Asegurarse que la direccion de dependencias es la correcta.
+        La idea es proteger los componentes de alto nivel de los cambios surgidos en los componentes de bajo nivel.
+
+        Ejemplo: 
+            Se tiene una clase SalesService que depende de otra llamada CsvReport
+            Si en un futuro se desea implementar otro tipo de reporte
+            Dada la dependencia en SalesService, si o si estamos obligados a modificar la funcionalidad actual para añadir una nueva funcionalildad
+
+            Una forma de corregirlo es que SalesService interactue con los reportes por medio de una interfaz -> ReportInterface
+    
+        
+Liskov Substitution Principle:
+    Todas las clases que hereden de otra, podran usarse indistintamente, sin que eso rompa la aplicacion,
+    incluyendo en ello a la clase padre.
+
+    Ejemplo:
+        Se tiene una clase Rectangle (setHigh(), setWidth()) que es padre de una clase Square (setWidth()).
+        Y se tiene una clase User que usa Rectangle
+
+        Siguiendo este principio, todas las instancias de Rectangle podrian ser reemplazadas por Square y no deberia fallar
+        pero en este caso falla, dado que un Rectangle posee alto y ancho, y un Square solo posee ancho.
+
+        Este principio nos hace ser cuidadosos al momento de crear una herencia, si no se puede garantizar este principio 
+        significa que no esta bien crear dicha herencia, en este caso aunque un cuadrado pueda ser considerado un rectangulo de lados
+        iguales, no esta bien aplicada la herencia, deberian ser clases independientes.
+    
+    Ejemplo 2:
+        Se tiene una clase Mamifero con el metodo caminar(), y de esta calse heredan un Perro() y un Delfin().
+        Para soslayar que los delfines se define una excepcion en caso de que se intente hacer caminar a un delfin.
+        Esto incumple el principio.
+
+        Por lo que una solucion seria crear una clase MamiferoTerrestre que herede de mamifero e implemente el metodo
+        caminar(), de esta forma, la clase Mamifero ya no puede caminar(), la clase Perro hereda de MamiferoTerrestre
+        y Delfin puede seguir heredando de Mamifero.
+
+Interface Segregation Principle:
+    Ningun cliente debe depender de metodos que no use.
+
+    Ejemplo:
+        se tiene una clase Operations con los metodos:
+            operation1() -> Usada por la clase User1
+            operation2() -> Usada por la clase User2
+            operation3() -> Usada por la clase User3
+
+        Como cada uno de los clientes requiere solo un metodo, este principio se incumple, el problema
+        es que en lenguajes compilados como java, si se requiere un cambio en operation1(), se debe recompilar
+        la clase completa afectando a User2 y User3 que no requerian cambios.
+
+        La forma de solucionarlo es mediante el uso de interfaces, se crearia una interface que implemente cada operation
+        y cada User usara la interfaz que necesite.
+    
+
+Dependency Inversion Principle:
+    Los sistemas flexibles son aquellos que dependen de abstracciones y no de concresiones.
+    Un modulo debe depender de interfaces y de clases abstractas, y no de implementaciones que puedan cambiar.
+    Esto hace necesario un mecanismo que cree las instancias de las implementaciones que necesitemos.
+
+    Este mecanismo es un patron de diseño llamado Abstract Factory, las factories crearan las dependencias
+
+    Todas las dependencias apuntan hacia abstracciones (interfaces) y no de implementaciones concretas
+
+    Consideraciones:
+        Esta inversion de dependencia es costosa
+        Spring es un framework que aporta la inyeccion de dependencias, @Autowired, automaticamente crea las dependencias.
+        Si se tiene certeza de que una clase no es volatil (logica de negocio central), se puede depender de ella.
+        Si no hay claridad, se debe depender de interfaces aislando la logica de negocio de elementos volatiles 
+
+
